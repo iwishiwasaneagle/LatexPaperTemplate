@@ -39,3 +39,7 @@ As per https://github.com/James-Yu/LaTeX-Workshop/issues/4052, the default build
   - Select `Latexmk "latexmk 🔃"`
 
 This is done to keep the update-on-save feature.  Once `bibtex` and `makeindex` have been run once, their output files are saved in the directory anyway and this shouldn't cause too many issues.
+
+## Other Templates
+
+- [LatexResponseToReviewersTemplate](https://github.com/iwishiwasaneagle/LatexResponseToReviewersTemplate)
