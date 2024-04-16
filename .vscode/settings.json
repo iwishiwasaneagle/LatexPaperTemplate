@@ -102,4 +102,7 @@
         "**/*.nls"
     ],
     "latex-workshop.synctex.afterBuild.enabled": true,
+    "vim.handleKeys": {
+        "<C-p>": false
+    }
 }
