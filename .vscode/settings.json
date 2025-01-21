@@ -54,7 +54,6 @@
                 "-interaction=nonstopmode",
                 "-file-line-error",
                 "-pdf",
-                "-aux-directory=%OUTDIR%",
                 "-output-directory=%OUTDIR%",
                 "%DOCFILE_EXT%"
             ]
