@@ -10,6 +10,11 @@
     "latex-workshop.latex.clean.args": [
         "-C"
     ],
+    "latex-workshop.formatting.latex": "tex-fmt",
+    "latex-workshop.formatting.tex-fmt.path": "/opt/tex-fmt/tex-fmt",
+    "latex-workshop.formatting.tex-fmt.args": [
+        "--nowrap", "--tabsize", "4"
+    ],
     "latex-workshop.latex.recipes": [
         {
             "name": "latexmk 1️⃣",
@@ -103,4 +108,7 @@
         "**/*.nls"
     ],
     "latex-workshop.synctex.afterBuild.enabled": true,
+    "vim.handleKeys": {
+        "<C-p>": false
+    }
 }
