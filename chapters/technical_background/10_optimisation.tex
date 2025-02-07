@@ -1,0 +1,104 @@
+\section{Optimization}
+
+\subsection{Stochastic Gradient Descent}
+
+Consider the following problem that is trying to minimize the loss function
+\begin{equation}
+    \Lagr(\theta) = \frac{1}{N}\sum^N_{i=0} \Lagr(x_i, y_i, \theta)
+    \label{eqn:optim:loss_function}
+\end{equation}
+where $\Lagr(x_i, y_i, \theta)$ corresponds to the $i$th observation in the dataset with values $x_i$ and label $y_i$.
+Standard \nomdef{Gradient Descent}{GD} would minimize \autoref{eqn:optim:loss_function} through the iterative process
+\begin{equation}
+    \theta \leftarrow \theta - \eta \frac{1}{N}\sum^N_{i=0}  \nabla_\theta\Lagr(x_i, y_i, \theta)
+\end{equation}
+
+\cite{kiefer_stochastic_1952}
+\nomdef{Stochastic Gradient Descent}{SGD} approximates the gradient at a single sample and updates the parameters through
+\begin{equation}
+    \theta \leftarrow \theta - \eta\nabla_\theta\Lagr(x_i, y_i, \theta)
+\end{equation}
+SGD updates the parameters $\theta$ as it traverses the dataset, and can be run multiple times. If it is run more than once, the dataset can be shuffled.
+
+\begin{algorithm}
+    \caption{Stochastic Gradient Descent\label{alg:optim:sgd_online}}
+    \KwData{Parameters $\theta$, values $\vec x$, labels $\vec y$, learning rate $\eta$}
+    \KwResult{Updated parameters $\theta_t$}
+    $\theta_0 \longleftarrow \theta$ \;
+    $t \longleftarrow 0$ \;
+    \While{$\theta_t$ not converged}{
+        $t \longleftarrow t + 1$ \;
+        $i \longleftarrow \mod(t, |\vec x|)$ \;
+        \If{$i = 0$}{
+            Shuffle $\vec x, \vec y$ whilst ensuring they remain aligned\;
+        }
+        $\theta_t \longleftarrow \theta_{t-1} -\eta \cdot \nabla_\theta \Lagr(x_i, y_i,\theta_{t-1}) / M$ \;
+    }
+\end{algorithm}
+\begin{algorithm}
+    \caption{Minibatch Stochastic Gradient Descent\label{alg:optim:sgd_minibatch}}
+    \KwData{Parameters $\theta$, values $\vec x$, labels $\vec y$, learning rate $\eta$, and minibatch size $M$}
+    \KwResult{Updated parameters $\theta_t$}
+    $\theta_0 \longleftarrow \theta$ \;
+    $t \longleftarrow 0$ \;
+    \While{$\theta_t$ not converged}{
+        $t \longleftarrow t + 1$ \;
+        Shuffle $\vec x, \vec y$ whilst ensuring they remain aligned\;
+        $\hat\nabla_\theta \longleftarrow 0$\;
+        \For{$i \in [1,...,M]$}{
+            $\hat\nabla_\theta \longleftarrow \hat\nabla_\theta + \nabla_\theta \Lagr(x_i, y_i,\theta_{t-1})$\;
+        }
+        $\theta_t \longleftarrow \theta_{t-1} -\eta \cdot \hat\nabla_\theta / M$ \;
+    }
+\end{algorithm}
+
+\cite{rumelhart_learning_1986} introduced the momentum method which changes the update to
+\begin{equation}
+    \begin{gathered}
+        \Delta \theta \leftarrow \alpha \cdot \Delta \theta - \eta  \cdot \nabla_\theta \Lagr(x_i, y_i,\theta_{t-1}) \\
+        \theta \leftarrow \theta + \Delta \theta
+    \end{gathered}
+\end{equation}
+where $\alpha \in [0,1)$ controls the impact of the momentum. The algorithm that implements minibatch SGD with momentum can be seen in \autoref{alg:optim:sgd_minibatch_momentum}. It is noteworthy that with $\alpha = 0$ and $M = 1$, this simplifies into online SGD as seen in \autoref{alg:optim:sgd_online}. Similarly, with $\alpha = 0$ and $M > 1$, this simplifies into minibatch SGD.
+\begin{algorithm}
+    \caption{Minibatch Stochastic Gradient Descent With Momentum\label{alg:optim:sgd_minibatch_momentum}}
+    \KwData{Parameters $\theta$, values $\vec x$, labels $\vec y$, learning rate $\eta$, momentum $\alpha$, and minibatch size $M$}
+    \KwResult{Updated parameters $\theta_t$}
+    $\theta_0 \longleftarrow \theta$ \;
+    $t \longleftarrow 0$ \;
+    $\Delta \theta_t \longleftarrow 0$ \;
+    \While{$\theta_t$ not converged}{
+        $t \longleftarrow t + 1$ \;
+        Shuffle $\vec x, \vec y$ whilst ensuring they remain aligned\;
+        $\hat\nabla_\theta \longleftarrow 0$\;
+        \For{$i \in [1,...,M]$}{
+            $\hat\nabla_\theta \longleftarrow \hat\nabla_\theta + \nabla_\theta \Lagr(x_i, y_i,\theta_{t-1})$\;
+        }
+        $\Delta \theta_t \longleftarrow \alpha \cdot \Delta \theta_{t-1} - \eta \cdot \hat\nabla_\theta / M $ \;
+        $\theta_t \longleftarrow \theta_{t-1} - \Delta \theta_t$ \;
+    }
+\end{algorithm}
+
+\subsection{Adam}
+
+Adam \cite{kingma_adam_2017} is a stochastic optimiser that is widely used within machine learning. It uses the notion
+
+\begin{algorithm}
+    \caption{Adam\label{alg:optim:adam}}
+    \KwData{Parameters $\theta$, values $\vec x$, labels $\vec y$, learning rate $\eta$, exponential decay rates for moment estimates $\beta_1, \beta_2 \in [0,1)$. $\epsilon$ is a small number, such as $\num{1e-8}$, to avoid division by zero. \cite{kingma_adam_2017} suggest the default values of $\alpha = 0.001, \beta_1 = 0.9 , \beta_2=0.999$. All operations are element-wise.}
+    \KwResult{Updated parameters $\theta_t$}
+    $\theta_0 \longleftarrow \theta$ \;
+    $m_0 \longleftarrow 0$ \;
+    $v_0 \longleftarrow 0$ \;
+    $t \longleftarrow 0$ \;
+    \While{$\theta'$ not converged}{
+        $t \longleftarrow t + 1$ \;
+        $i \longleftarrow \mod(t, |\vec x|)$ \;
+        $\hat\nabla_\theta \longleftarrow \nabla_\theta \Lagr(x_j, y_j,\theta_{t-1})$ \;
+        $m_t \longleftarrow \beta_1 \cdot m_{t-1} + (1-\beta_1) \cdot \hat\nabla_\theta $ \;
+        $v_t \longleftarrow \beta_2 \cdot v_{t-1} + (1-\beta_r) \cdot (\hat\nabla_\theta \odot \hat\nabla_\theta)$ \;
+        $\hat m_t \longleftarrow m_t/(1-\beta_1^t)$ \;
+        $\hat v_t \longleftarrow v_t/(1-\beta_v^t)$ \;
+        $\theta_t \longleftarrow \theta_{t-1} - \eta \cdot \hat m_t / (\sqrt{\hat v_t} + \epsilon)$ \;
+    }
+\end{algorithm}

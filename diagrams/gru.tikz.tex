@@ -1,0 +1,56 @@
+\begin{tikzpicture}[]
+    % \node [cell, minimum height =4cm, minimum width=6cm] at (0,0){} ;
+
+    \node [function] (sig1) at (-1.75,-0.75) {$\sigma$};
+    \node [function] (sig2) at (1.25,-0.75) {$\sigma$};
+
+    \node [function] (tanh1) at (0.1,1.5) {$\tanh$};
+
+    \node [operator] (add1) at (-1,1.5) {+};
+    \node [operator] (add2) at (2,1.5) {+};
+    \node [operator] (hadmard1) at (-1.75,1.5) {$\cdot$};
+    \node [operator] (hadmard2) at (1.25,1.5) {$\cdot$};
+    \node [operator] (hadmard3) at (2,0) {$\cdot$};
+
+    \node[ct, label={[label]Hidden}] (htprev) at (-4,0) {$h_{t-1}$};
+    \node[ct, label={[label]left:Input}] (xt) at (-2.5,-3) {$x_t$};
+    \node[ct, label={[label]Hidden}] (ht) at (4,0) {$h_t$};
+    \node[ct, label={[label]left:Output}] (yt) at (2.5,3) {$y_t$};
+
+    \draw [ml/weights/rounded1] (htprev) -- (hadmard3);
+
+    \draw [->, ml/weights/rounded1, line width=5pt, white] (sig1) -- (hadmard1);
+    \draw [->, ml/weights/rounded1] (sig1) -- node[left] {$r_t$} (hadmard1);
+    \draw [->, ml/weights/rounded1] (hadmard1) -- (add1);
+    \draw [->, ml/weights/rounded1] (add1) -- (tanh1) ;
+    \draw [->, ml/weights/rounded1] (tanh1) -- node[below] {$n_t$} (hadmard2) ;
+    \draw [->, ml/weights/rounded1] (hadmard2) -- (add2);
+    \draw [->, ml/weights/rounded1] (hadmard3) -- (add2);
+
+    \coordinate (i1) at ($(add2 -| yt) + (-0.5,0)$);
+    \coordinate (i2) at ($(add2 -| yt) + (0,-0.5)$);
+    \draw [ml/weights/rounded1] (i1) -| (yt);
+    \draw [ml/weights/rounded1] (i1) -|  (i2);
+    \draw [ml/weights/rounded1] (i2) |- (ht);
+
+    \coordinate (i3) at ($(sig2)!0.5!(hadmard3)$);
+    \draw [->, ml/weights/rounded1, line width=5pt, white] (sig2) -- (hadmard2);
+    \draw [->, ml/weights/rounded1] (sig2) -- (hadmard2);
+    \draw [ml/weights/rounded1] (sig2) |- (i3);
+    \draw [->, ml/weights/rounded1] (i3) -| node[below] {$z_t$} (hadmard3);
+
+    \coordinate (temp_a) at ($(xt)!0.5!(sig1)$);
+    \coordinate (i4) at (temp_a |- 0,-1.25);
+    \coordinate (i5) at (temp_a |- 0,-1.75);
+    \coordinate (i6) at ($(xt |- htprev) + (-0.5,0)$);
+    \coordinate (i7) at ($(xt |- htprev) + (0,-0.5)$);
+    \draw [ml/weights/rounded1] (xt)  |- (i4);
+    \draw [ml/weights/rounded1] (xt)  |- (i5);
+    \draw [ml/weights/rounded1] (i4) -| (sig1);
+    \draw [ml/weights/rounded1] (i4) -| (sig2);
+    \draw [ml/weights/rounded1, line width=5pt, white] (i5) -| (add1);
+    \draw [ml/weights/rounded1] (i5) -| (add1);
+    \draw [ml/weights/rounded1] (htprev) -- (i6) -| (i7) |- (i4);
+
+    \node[cell, fit=(i5) (xt |- htprev) (yt |- add2)] {};
+\end{tikzpicture}

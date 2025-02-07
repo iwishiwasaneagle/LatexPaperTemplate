@@ -1,0 +1,43 @@
+\begin{tikzpicture}[]
+    \def\ninput{4};
+    \def\noutput{3};
+    \def\nhiddendepth{3};
+    \def\nhiddenwidth{5};
+
+    \foreach \indexi [parse=true] in {0,...,\ninput-1}{
+        \node[ml/node] (x\indexi) at ($(0,{(\ninput / 2) - \indexi})$) {$x_\indexi$};
+    }
+
+    \foreach \indexi [parse=true] in {0,...,\nhiddendepth-1} {
+        \foreach \indexj [parse=true] in {0,...,\nhiddenwidth-1}{
+            \node[ml/node] (h\indexi\indexj) at ($(\indexi+1, {(\nhiddenwidth / 2) - \indexj})$) {};
+        }
+    }
+
+    \foreach \indexi [parse=true] in {0,...,\noutput-1}{
+        \node[ml/node] (y\indexi) at ($(\nhiddendepth+1,{(\noutput / 2) - \indexi})$) {$y_\indexi$};
+    }
+
+    \foreach \indexi [parse=true] in {0,...,\ninput-1} {
+        \foreach \indexj [parse=true] in {0,...,\nhiddenwidth-1}{
+            \draw[ml/weights] (x\indexi) -- (h0\indexj);
+        };
+    };
+
+    \pgfmathsetmacro{\nhiddendepthfinalindex}{int(\nhiddendepth-1)}
+    \foreach \indexi [parse=true] in {0,...,\noutput-1} {
+        \foreach \indexj [parse=true] in {0,...,\nhiddenwidth-1}{
+            \draw[ml/weights] (h\nhiddendepthfinalindex\indexj) -- (y\indexi);
+        }
+    }
+    \xdef\lastlayer{0}
+    \foreach \indexi [parse=true] in {1,...,\nhiddendepth-1} {
+        \foreach \indexj [parse=true] in {0,...,\nhiddenwidth-1}{
+            \foreach \indexk [parse=true] in {0,...,\nhiddenwidth-1}{
+                \draw[ml/weights] (h\lastlayer\indexj) -- (h\indexi\indexk);
+            };
+        };
+        \xdef\lastlayer{\indexi}
+    }
+
+\end{tikzpicture}

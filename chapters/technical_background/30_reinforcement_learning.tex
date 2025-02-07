@@ -1,0 +1,256 @@
+\section{Reinforcement Learning}
+\note{This notation in this section needs refined. Isn't consistent right now.}
+
+\note{On the back-burner right now. Need to decide what my source of truth is. SpinningUp might be a good idea, but a textbook might be good too. Worried about plagiarism but I don't really see another way.}
+
+\subsection{Proximal Policy Optimisation}
+
+\cite{schulman_proximal_2017}
+
+\subsubsection{On-Policy Value Function}
+
+\begin{equation}
+    V^\pi(s_t)
+    =
+    \mathbb{E}_{\tau\sim\pi}
+    \left[R(\tau)|s_0=s\right]
+\end{equation}
+is the on-policy value function which gives the expected return if you start in state $s$ and always follow policy $\pi$ for subsequent actions.
+
+The Bellman equation for the on-policy value function is then
+\begin{equation}
+    V^\pi(s_t)
+    =
+    \operatorname*{\mathbb{E}}\limits_{a_t\sim\pi,s_t'\sim{P}}
+    \left[
+        r(s_t, a_t) + \gamma V^\pi(s_t')
+    \right]
+\end{equation}
+where $s_t'\sim{P}$ is shorthand for $s_t' \sim P(\cdot|s_t,a_t)$ giving $s_t'$, the next state sampled from the environment's transition rules, and $a_t\sim\pi$ is shorthand for $a_t\sim\pi(|cdot|s_t)$
+
+\subsubsection{On-Policy State-Value Function}
+
+\begin{equation}
+    Q^\pi(s_t, a_t) = \mathbb{E}_{\tau\sim\pi}
+    \left[R(\tau)|s_0=s, a_0=a\right]
+\end{equation}
+is the on-policy action-value function which gives the expected return if you start in state $s$, take the action $a$, and then follow policy $\pi$ for all subsequent actions.
+
+The Bellman equation for the on-policy state-value function is then
+\begin{equation}
+    Q^\pi(s_t, a_t)
+    =
+    \operatorname*{\mathbb{E}}\limits_{s_t'\sim{P}}
+    \left[
+        r(s_t, a_t) + \gamma
+        \operatorname*{\mathbb{E}}\limits_{a'\sim{\pi}}
+        \left[
+            Q^\pi(s_t', a_t')
+        \right]
+    \right]
+\end{equation}
+where $a'\sim{\pi}$ is shorthand for $a'_t \sim \pi(\cdot|s_t')$.
+
+\subsubsection{The Advantage Function}
+
+The advantage of an action is given by
+\begin{equation}
+    A^\pi(s_t, a_t) = Q^\pi(s_t, a_t) - V^\pi(s_t)
+\end{equation}
+This gives a measure of how good taking action $a_t$ from state $s_t$ is and then following policy $\pi$ forever relative to sampling an action from $\pi(\cdot|s_t)$ and following that forever.
+
+\paragraph{Generalized Advantage Estimation}
+
+$\mathrm{GAE}(\gamma, \lambda)$ is defined as the infinite-horizon exponentially-weighted average average of $k$-step estimators
+\begin{equation}
+    \begin{gathered}
+        \hat A_t^{\mathrm{GAE}(\gamma, \lambda)} = \sum^\infty_{l=0} (\gamma \lambda)^l \delta^V_{t+l} \\
+        \delta^V_t = r_t + \gamma V(s_{t+1}) - V(s_t)
+    \end{gathered}
+\end{equation}
+In practice, however, this is impractical as the number of steps taken in an epoch are finite. The truncated version of the generalized advantage estimate is then
+\begin{equation}
+    \hat A_t^{\mathrm{GAE}(\gamma, \lambda)} = \sum^T_{l=0} (\gamma \lambda)^l \delta^V_{t+l}
+\end{equation}
+
+\cite{schulman_highdimensional_2018}
+
+\subsubsection{Clipped Surrogate Objective}
+Clip surrogate objective
+\newcommand{\Lclip}{\Lagr^\mathrm{CLIP}}
+\begin{equation}
+    \Lclip_{\theta_k, s_t, a_t} (\theta) =
+    \operatorname*{\mathbb{E}}\limits_{s,a\sim\pi_{\theta_k}}
+    \left[
+        \min(r_t(\theta)\hat A^{\pi_{\theta_k}}(s_t, a_t),
+            \mathrm{clip}(
+                r_t(\theta), 1-\epsilon, 1+\epsilon
+            )\hat A^{\pi_{\theta_k}}(s_t, a_t)
+        )
+    \right]
+    \label{eqn:rl:surrogate_clipped_objective}
+\end{equation}
+where $\epsilon$ is a hyperparameter. The first term, $r_t(\theta)A^{\pi_{\theta_k}}(s_t, a_t)$, refers to conservative policy iteration from \cite{kakade_approximately_2002} which aims to improve the policy in a more uniform manner over the state-space whilst performing a conservative policy update. However, without a constraint this would lead to a large policy update. The second term, $\mathrm{clip}(
+    r_t(\theta), 1-\epsilon, 1+\epsilon
+)A^{\pi_{\theta_k}}(s_t, a_t)$, thus modifies the surrogate objective to prevent $r_t(\theta)$ from moving outside of the interval $[1-\epsilon, 1+\epsilon]$. Taking the minimum of the two terms results in a pessimistic bound of the unclipped objective. This means that the probability ratio
+\begin{equation}
+    r_t(\theta) =
+    \frac{
+        \pi_\theta (a_t | s_t)
+    }{
+        \pi_{\theta_k} (a_t | s_t)
+    }
+\end{equation}
+is only included when it would make the objective worse. If $A^\pi > 0$ then $\Lclip$ is increasing until $\pi_\theta(a_t|s_t) > (1+\epsilon)\pi_{\theta_k} (a_t | s_t)$ because the action becomes more likely. After this, $\Lclip$ has a maximum value of $(1+\epsilon)A^{\pi_{\theta_k}}(s_t, a_t)$ meaning the policy does not gain anything by going too far away from the previous policy. Conversely, if $A^\pi < 0$ then $\Lclip$ is increasing until $\pi_\theta(a_t|s_t) < (1-\epsilon)\pi_{\theta_k} (a_t | s_t)$ because the action becomes less likely. $\Lclip$ decreases until it reaches $(1-\epsilon)A^{\pi_{\theta_k}}(s_t, a_t)$ and thus the policy, again, does not benefit from deviating too far from the previous policy. This behaviour is evident from \autoref{fig:ppo:surrogate_clipped_loss} showing that $\Lclip$ is increasing until it reaches the saturation threshold.
+
+Combining \autoref{eqn:rl:surrogate_clipped_objective} with an entropy bonus $S$ to promote exploration and the value function loss, we get
+\begin{equation}
+    \Lagr^{\mathrm{CLIP}+\mathrm{VF}+\mathrm{S}}_{\theta_k, s_t, a_t} (\theta)
+    =
+    \operatorname*{\mathbb{E}}\limits_{s,a\sim\pi_{\theta_k}}
+    \left[
+        \Lclip_{\theta_k, s_t, a_t} (\theta) - c_1 (V_\theta(s_t) - V_\mathrm{target})^2 + c_2 S[\pi_\theta](s_t)
+    \right]
+\end{equation}
+
+\begin{figure}[htbp]
+    \centering
+    \tikzset{
+        declare function={
+            surrogate_clipped_advantage(\r,\a,\eps) = min(\r*\a, min(max(\r, 1-\eps), 1+\eps)*\a);
+        }
+    }
+    \def\eps{0.2}
+    \subcaptionbox{The surface plot of $\Lclip$\label{fig:ppo:surrogate_clipped_loss:surf}}{
+        \begin{tikzpicture}[]
+            \begin{axis}[
+                    axis equal image,
+                    scale only axis,
+                    width=0.33\linewidth,
+                    xlabel=$r_t$,
+                    ylabel=$A^\pi$,
+                    % hide axis,
+                    view={0}{90},
+                    domain=0:1+2*\eps,
+                    y domain=-1:1,
+                    colorbar horizontal,
+                    colorbar style={
+                        xlabel=$\Lclip$,
+                        at={(0.5,1.03)},
+                        anchor=south,
+                        xticklabel pos=upper,
+                    },
+                    colormap/RdYlBu-7,
+                    ytick={-1, 0, 1},
+                    xtick={0, 0.5, 1},
+                    extra x ticks={1-\eps, 1+\eps},
+                    extra x tick style={
+                        grid=major,
+                        tick label style={
+                            rotate=270,
+                            anchor=west
+                        }
+                    },
+                    extra x tick labels={$1-\epsilon$, $1+\epsilon$},
+                ]
+                \addplot3[
+                    surf,
+                    samples=30,
+                    point meta min=-0.25, point meta max=0.25
+                ]
+                {
+                    surrogate_clipped_advantage(x, y, \eps)
+                };
+            \end{axis}
+        \end{tikzpicture}
+    }
+    \hfill
+    \newcommand{\advantagewithconstanta}[1]{
+        \begin{tikzpicture}[]
+            \def\eps{0.2}
+            \def\advantage{#1}
+            \begin{axis}[
+                    % axis equal image,
+                    scale only axis,
+                    xlabel=$r_t$,
+                    ylabel=$\Lclip$,
+                    % hide axis,
+                    width=0.25\linewidth,
+                    view={0}{90},
+                    domain=0:1+2*\eps,
+                    xtick={0,0.5, 1},
+                    extra x ticks={1-\eps, 1, 1+\eps},
+                    extra x tick style={
+                        grid=major,
+                    },
+                    extra x tick labels={$1-\epsilon$, , $1+\epsilon$},
+                ]
+                \addplot[samples=100]
+                {
+                    surrogate_clipped_advantage(x, \advantage, \eps)
+                };
+            \end{axis}
+        \end{tikzpicture}
+    }
+    \subcaptionbox{$A^\pi=1$\label{fig:ppo:surrogate_clipped_loss:a=1}}{
+        \advantagewithconstanta{1}
+    }
+    \hfill
+    \subcaptionbox{$A^\pi=-1$\label{fig:ppo:surrogate_clipped_loss:a=-1}}{
+        \advantagewithconstanta{-1}
+    }
+    \caption{$\Lclip$ for a single timestep with $\epsilon=\eps$ as a function of: \subref{fig:ppo:surrogate_clipped_loss:surf} $A^\pi$ and $r_t$, \subref{fig:ppo:surrogate_clipped_loss:a=1} $r_t$, \subref{fig:ppo:surrogate_clipped_loss:a=-1} $r_t$. The optimisation starts at $r=1$ and is clipped in the bounds $[1-\epsilon, 1+\epsilon]$.}
+    \label{fig:ppo:surrogate_clipped_loss}
+\end{figure}
+
+\subsection{Soft Actor-Critic}
+
+\subsubsection{Optimal Value Function}
+\begin{equation}
+    V^*(s) = \max_\pi
+    \operatorname*{\mathbb{E}}\limits_{\tau \sim \pi}\left[r(\tau)|s_0=s\right]
+\end{equation}
+is the optimal value function which gives the expected return if you start in state $s$ and always follow policy the optimal $\pi^*$ for subsequent actions.
+
+The Bellman equation for the optimal value function is then
+\begin{equation}
+    V^*(s) = \max_a
+    \operatorname*{\mathbb{E}}\limits_{s' \sim P}\left[r(s,a)+\gamma V^*(s')\right]
+\end{equation}
+
+\subsubsection{Optimal Action-Value Function}
+\begin{equation}
+    Q^*(s, a) = \max_\pi\mathbb{E}_{\tau\sim\pi}
+    \left[R(\tau)|s_0=s, a_0=a\right]
+\end{equation}
+is the optimal action-value function which gives the expected return if you start in state $s$, take the action $a$, and then follow the optimal policy $\pi^*$ for all subsequent actions.
+
+The Bellman equation for the optimal action-value function is then
+\begin{equation}
+    Q^*(s, a) = \mathbb{E}_{s'\sim P}
+    \left[r(s,a) + \gamma \max_{a'}Q^*(s',a')\right]
+\end{equation}
+
+\subsubsection{Maximum Entropy}
+
+\nomdef{Soft Actor-Critic}{SAC} \cite{haarnoja_soft_2018} is an off-policy actor-critic algorithm that employs the notion of entropy maximisation. Classical RL maximizes the expected sum of rewards
+\begin{equation}
+    J(\pi) = \sum_{t=0}^T \operatorname*{\mathbb{E}}\limits_{(\vec s_t, \vec a_t) \sim \rho_\pi}\left[r(\vec s_t, \vec a_t)\right]
+\end{equation}
+SAC augments this objective function with the expected entropy of the policy over $\rho_\pi(\vec s_t)$
+\begin{equation}
+    J(\pi) = \sum_{t=0}^T \operatorname*{\mathbb{E}}\limits_{(\vec s_t, \vec a_) \sim \rho_\pi}\left[
+        r(\vec s_t, \vec a_t)
+        +
+        \alpha \mathcal{H}(\pi_\theta(\cdot|\vec s_t))
+    \right]
+\end{equation}
+
+\subsubsection{Temperature Parameter} The temperature parameter, $\alpha$, in the original implementation of SAC in \cite{haarnoja_soft_2018} is constant. However, \cite{haarnoja_soft_2019} proposes that $\alpha$ is a learnable parameter in order to automatically regulate the entropy. This is important as the optimal $\alpha$ is different for every policy and since the policy changes over time it is incredibly hard to find a constant $\alpha$ that is sufficient. The gradient of $\alpha$ is computed using the objective function
+\begin{equation}
+    J(\alpha) = \operatorname*{\mathbb{E}}\limits_{\vec a_t \sim \pi_t}
+    \left[
+        -\alpha \log \pi_t (\vec a_t | \vec s_t) - \alpha \bar{\mathcal{H}}
+    \right]
+\end{equation}
+where $\bar{\mathcal{H}}$ is the target entropy and is set to $\dim(\vec a)$.
