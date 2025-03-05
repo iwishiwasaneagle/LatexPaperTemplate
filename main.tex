@@ -1,164 +1,21 @@
-\documentclass[12pt,titlepage,oneside]{book}
-\usepackage[
-    % showframe,
-    top=18mm,
-    bottom=18mm,
-    left=15mm,
-    right=15mm,
-    % bindingoffset=25mm
-]{geometry}
-\usepackage[T1]{fontenc}
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
 
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage[scaled]{helvet}
 \usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage[onehalfspacing]{setspace}
-
-% --- Units --- %
+\usepackage{amsmath}
 \usepackage{siunitx}
+\usepackage{longtable,tabularx}
+\usepackage{booktabs}
 
-% --- Algorithms --- %
-\usepackage{algorithm2e}
-\RestyleAlgo{ruled}
+% --- Title declaration --- %
+\title{Thesis Outline}
 
-% --- SubCaption --- %
-\usepackage{subcaption}
-\captionsetup{subrefformat=parens}
-
-% -- Bibliography --- $
-\usepackage[
-    backend=biber,
-    style=alphabetic,
-    sorting=ynt
-]{biblatex}
-\addbibresource{references.bib}
-
-% --- TIKZ --- %
-\input{diagrams/preamble.tikz.tex}
-
-% --- Numbering --- %
-% \renewcommand\thechapter{\Roman{chapter}}
-\setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{3}
-
-% --- Nomenclature --- %
-\usepackage{nomencl}
-\makenomenclature
-\newcommand{\nomdef}[2]{%
-    \ifcsname nom@\detokenize{#2}\endcsname
-    \textcolor{red}{#2}%
-    \else
-    \expandafter\gdef\csname nom@\detokenize{#2}\endcsname{}%
-    #1 (#2)\nomenclature{#2}{#1}%
-    \fi
-}
-
-% -- TODO --- %
-\usepackage[colorinlistoftodos,color=red!40]{todonotes}
-\makeatletter
-\renewcommand{\todo}[2][]{\tikzexternaldisable\@todo[#1]{#2}\tikzexternalenable}
-\makeatother
-\newcommand\note[1]{\todo[color=green!40,inline]{#1}}
-
-% --- Maths --- %
-\usepackage{physics} % for \dv and \pdv
-\renewcommand{\vec}{\mathbf}
-\newcommand{\mat}{\mathbf}
-\newcommand{\Lagr}{\mathcal{L}}
-
-% ---------------- %
-% --- DOCUMENT --- %
-% ---------------- %
+\author{Jan-Hendrik Ewers \footnote{Researcher, Aerospace Sciences Research Division, School of Engineering.}}
+\affil{University of Glasgow, Glasgow, Scotland, G12 8QQ}
 
 \begin{document}
-\begin{titlepage}
-    \centering
-    \vspace*{3cm}  % Need the * or the space is swallowed at the top of the page
-    \bfseries\Large
-    Thesis Title\\
-    \vspace{3cm}
-    \normalfont\large
-    Jan-Hendrik Ewers\\
-    \vspace{2cm}
-    Submitted in fulfilment of the requirements for the\\
-    Degree of Doctor of Philosophy\\
-    \vspace{2cm}
-    School of Engineering\\
-    College of Science and Engineering\\
-    University of Glasgow\\
-    \vspace{1cm}
-    \includegraphics[scale=0.125]{GlaLogo.pdf}
-    \\
-    \vspace{1cm}
-    % Insert month and year of date deposited with library for final version
-    \today
-\end{titlepage}
-\frontmatter
 
-\chapter{Abstract}
-
-\listoftodos
-\tableofcontents
-\listoftables
-\listoffigures
-
-\chapter{Acknowledgements}
-
-\chapter{Declaration}
-\mainmatter
-
-\chapter{Introduction}
-
-\include{chapters/technical_background/00_technical_background}
-
-% \blindsection{Introduction}
-
-% \blindsubsection{Background}
-% \blindsubsection{Aims and Objectives}
-% \blindsubsection{Contributions}
-% \blindsubsection{Outline}
-
-% \blindsection{Literature Review}
-
-% \blindsection{Probability Distribution Map Generation}
-% \blindsubsection{Introduction}
-% \blindsubsection{Agent-based Model}
-% \blindsubsection{Design of Experiment}
-% \blindsubsection{Results}
-
-% \blindsection{2D Integration}
-% \blindsubsection{Introduction}
-% \blindsubsection{Sampling-based}
-% \blindsubsection{Cubature}
-% \blindsubsection{Performance Comparison}
-
-% \blindsection{Continuous Probability Distribution Map Representation}
-% \blindsubsection{Introduction}
-% \blindsubsection{Curve Fitting}
-% \blindsubsection{Gaussian Mixture Model}
-% \blindsubsection{Performance Comparison}
-
-% \blindsection{Modelling Of A Quadcopter}
-% \blindsubsection{Introduction}
-% \blindsubsection{Non-linear 6DOF}
-% \blindsubsection{Controller}
-% \blindsubsubsection{Design}
-% \blindsubsubsection{Tuning using GA}
-% \blindsubsection{Performance Evaluation}
-
-% \blindsection{Deep Reinforcement Learning Search Mission Planning}
-% \blindsubsection{Introduction}
-% \blindsubsection{Single-agent: point-to-point}
-% \blindsubsection{Single-agent: non-linear dynamics}
-% \blindsubsection{Multi-agent}
-
-% \blindsection{Discussion}
-
-% \blindsection{Conclusion}
-
-% \blindsection{Future Work}
-
-\printbibliography
+\maketitle
 
 \end{document}
