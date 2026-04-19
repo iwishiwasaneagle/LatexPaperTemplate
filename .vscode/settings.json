@@ -9,7 +9,8 @@
     "latex-workshop.latex.outDir": "build",
     "latex-workshop.latex.clean.command": "latexmk",
     "latex-workshop.latex.clean.args": [
-        "-C"
+        "-C",
+        "-outdir=%OUTDIR%"
     ],
     "latex-workshop.formatting.latex": "tex-fmt",
     "latex-workshop.formatting.tex-fmt.path": "/opt/tex-fmt/tex-fmt",
