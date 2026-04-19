@@ -132,6 +132,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ needs.create-tag.outputs.tag }}
           file: ${{steps.download.outputs.download-path}}/main.pdf
-          asset_name: $tag.pdf
+          asset_name: ${{ needs.create-tag.outputs.tag }}.pdf
           release_name: "${{ needs.create-tag.outputs.tag }}"
           body: "${{ needs.setup-envs.outputs.release_body }}"
