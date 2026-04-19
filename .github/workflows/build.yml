@@ -15,19 +15,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: xu-cheng/latex-action@v3 
-        name: "Compile document 1/2"
+      - uses: xu-cheng/latex-action@v3
+        name: "Compile document"
         with:
           root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
-        
-      - uses: xu-cheng/latex-action@v3 
-        name: "Compile document 2/2"
-        with:
-          root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
-          pre_compile: "bibtex main"
-          post_compile: "latexmk -c"
+          latexmk_use_lualatex: false
+          latexmk_shell_escape: true
+          args: -pdf -f
+          extra_fonts: |
+            ./fonts/*
+          post_compile: "cp build/main.pdf main.pdf"
 
       - name: Rename main.pdf
         run: |
