@@ -14,28 +14,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-        name: Enable docker cache
-        
-      - uses: xu-cheng/latex-action@v3 
-        name: "Compile document 1/2"
+
+      - uses: xu-cheng/latex-action@v3
+        name: "Compile document"
         with:
           root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
+          latexmk_use_lualatex: false
+          latexmk_shell_escape: true
+          args: -pdf -f
           extra_fonts: |
             ./fonts/*
-        
-      - uses: xu-cheng/latex-action@v3 
-        name: "Compile document 2/2"
-        with:
-          root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
-          pre_compile: "bibtex main; makeindex main.nlo -s nomencl.ist -o main.nls"
-          post_compile: "latexmk -c"
-          extra_fonts: |
-            ./fonts/*
+          post_compile: "cp build/main.pdf main.pdf"
 
       - name: Rename main.pdf
         run: |
