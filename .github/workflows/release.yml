@@ -70,11 +70,11 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          r=$(cat ${{ steps.git-cliff-latest.outputs.changelog }})
-          r="$(printf "$r" | tail -n +3)"
-          r="${r//'%'/'%25'}"
-          r="${r//$'\n'/'%0A'}"
-          r="${r//$'\r'/'%0D'}"
+          {
+            echo 'release_body<<EOF'
+            cat ${{ steps.git-cliff-latest.outputs.changelog }} | tail -n +3
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
   build:
     name: Build document
     runs-on: ubuntu-latest
