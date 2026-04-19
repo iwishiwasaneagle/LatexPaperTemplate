@@ -92,6 +92,8 @@ jobs:
         with:
           root_file: main.tex
           args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
+          extra_fonts: |
+            ./fonts/*
 
       - uses: xu-cheng/latex-action@v3
         name: "Compile document 2/2"
@@ -100,6 +102,8 @@ jobs:
           args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
           pre_compile: "bibtex main; makeindex main.nlo -s nomencl.ist -o main.nls"
           post_compile: "latexmk -c"
+          extra_fonts: |
+            ./fonts/*
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
