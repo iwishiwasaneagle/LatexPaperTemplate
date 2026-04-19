@@ -1,69 +1,75 @@
-\documentclass[journal]{new-aiaa}
-\usepackage[utf8]{inputenc}
-\usepackage{textcomp}
-
+\documentclass{ieeeaccess}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage[version=4]{mhchem}
+\usepackage{textcomp}
 \usepackage{siunitx}
-\usepackage{longtable,tabularx}
 \usepackage{booktabs}
 \usepackage{lipsum} % Remove this
-\setlength\LTleft{0pt} 
 
-% --- Title declaration --- %
-\title{A Template For Writing Beautiful Papers}
+\usepackage{bm}
+\makeatletter
+\AtBeginDocument{\DeclareMathVersion{bold}
+\SetSymbolFont{operators}{bold}{T1}{times}{b}{n}
+\SetSymbolFont{NewLetters}{bold}{T1}{times}{b}{it}
+\SetMathAlphabet{\mathrm}{bold}{T1}{times}{b}{n}
+\SetMathAlphabet{\mathit}{bold}{T1}{times}{b}{it}
+\SetMathAlphabet{\mathbf}{bold}{T1}{times}{b}{n}
+\SetMathAlphabet{\mathtt}{bold}{OT1}{pcr}{b}{n}
+\SetSymbolFont{symbols}{bold}{OMS}{cmsy}{b}{n}
+\renewcommand\boldmath{\@nomath\boldmath\mathversion{bold}}}
+\makeatother
 
-\author{Jan-Hendrik Ewers \footnote{Researcher, Aerospace Sciences Research Division, School of Engineering.}}
-\affil{University of Glasgow, Glasgow, Scotland, G12 8QQ}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 % --- Maths --- %
 \renewcommand{\vec}[1]{\mathbf{#1}}
-
-% --- Nomenclature --- %
-\usepackage{nomencl}
-\makenomenclature
-
-% --- Define nomenclature categories --- %
-\usepackage{etoolbox}
-\renewcommand\nomgroup[1]{%
-  \item[\bfseries
-  \ifstrequal{#1}{A}{Acronyms}{%
-  \ifstrequal{#1}{S}{Symbols}{}}%
-]}
 
 % --- Declare useful SI units --- %
 \DeclareSIUnit\km{\kilo\metre}
 \DeclareSIUnit\kmsq{\km\squared}
 
 % --- Custom commands --- %
-% Manually define refs for various items
 \newcommand{\reffig}[1]{Fig.~\ref{#1}}
 \newcommand{\refeqn}[1]{Eqn.~\ref{#1}}
 \newcommand{\reftbl}[1]{Tbl.~\ref{#1}}
 \newcommand{\refsect}[1]{Sect.~\ref{#1}}
-% Some useful temporary text commands
+
 \usepackage{xcolor}
 \newcommand{\temphighlight}[2]{{\color{red}\textbf{\textbackslash\textbackslash{}#1}~#2}}
 \newcommand{\todo}[1][]{\temphighlight{TODO}{#1}}
 \newcommand{\note}[1][]{\temphighlight{NOTE}{#1}}
-% Automatically print nomenclature, and add it to the list
-\newcommand{\nomdef}[2]{#1 (#2)\nomenclature{#2}{#1}}
 
 % --- !!! UPDATE THIS !!! --- %
 \graphicspath{{sections/conclusion/figures/}{sections/intro/figures/}{sections/method/figures}{sections/results/figures/}}
 
 \begin{document}
+\history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
+\doi{10.1109/ACCESS.2024.0429000}
 
-\maketitle
+\title{A Template For Writing Beautiful Papers}
+\author{\uppercase{Jan-Hendrik Ewers}\authorrefmark{1}}
+
+\address[1]{Aerospace Sciences Research Division, School of Engineering, University of Glasgow, Glasgow, Scotland, G12 8QQ}
+
+\markboth
+{Ewers: A Template For Writing Beautiful Papers}
+{Ewers: A Template For Writing Beautiful Papers}
+
+\corresp{Corresponding author: Jan-Hendrik Ewers.}
 
 \input{sections/abstract/abtract.tex}
 
+\begin{keywords}
+keyword1, keyword2, keyword3
+\end{keywords}
+
+\titlepgskip=-21pt
+
+\maketitle
+
 \input{sections/intro/introduction.tex}
-
-\tableofcontents
-
-\input{nomenclature.tex}
 
 \input{sections/method/method.tex}
 
@@ -71,6 +77,7 @@
 
 \input{sections/conclusion/conclusion.tex}
 
+\bibliographystyle{IEEEtran}
 \bibliography{references}
 
 \end{document}
