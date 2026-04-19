@@ -1,0 +1,33 @@
+name: Compile LaTeX
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: Name for the uploaded PDF artifact
+        required: false
+        default: build-pdf
+        type: string
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: xu-cheng/latex-action@v3
+        name: "Compile document"
+        with:
+          root_file: main.tex
+          latexmk_use_lualatex: false
+          latexmk_shell_escape: true
+          args: -pdf -f
+          extra_fonts: |
+            ./fonts/*
+          post_compile: "cp build/main.pdf main.pdf"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ./main.pdf

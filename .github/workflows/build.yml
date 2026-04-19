@@ -7,24 +7,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  
-  Build:
+
+  compile:
+    uses: ./.github/workflows/compile.yml
+
+  upload:
     runs-on: ubuntu-latest
+    needs: compile
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: xu-cheng/latex-action@v3
-        name: "Compile document"
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
-          root_file: main.tex
-          latexmk_use_lualatex: false
-          latexmk_shell_escape: true
-          args: -pdf -f
-          extra_fonts: |
-            ./fonts/*
-          post_compile: "cp build/main.pdf main.pdf"
+          name: build-pdf
 
       - name: Rename main.pdf
         run: |
@@ -34,5 +32,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-pdf
+          name: build-pdf-renamed
           path: ./*.pdf
