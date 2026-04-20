@@ -170,8 +170,7 @@
 
 \def\putfont#1#2#3#4#5#6{\usefont{#1}{#2}{#3}{#4}\fontsize{#5}{#6}\selectfont}
 
-\font\symbfont=t1-formata-regsymb at 6pt
-\AtBeginDocument{\gdef\copyright{{\symbfont\char'012}}}
+\AtBeginDocument{\gdef\copyright{\textcopyright}}
 \def\putfont#1#2#3#4#5#6{\usefont{#1}{#2}{#3}{#4}\fontsize{#5}{#6}\selectfont}
 
 \def\textit#1{{\it #1}}%
