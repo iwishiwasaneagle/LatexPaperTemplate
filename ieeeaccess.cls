@@ -131,38 +131,38 @@
 
 
 \DeclareMathVersion{regular}
-\SetSymbolFont{operators}{regular}{T1}{formata}{n}{n}
+\SetSymbolFont{operators}{regular}{T1}{qhv}{m}{n}
 %\SetSymbolFont{letters}     {regular}{MY1}{mtt}{m}{it}
-\SetSymbolFont{NewLetters} {regular}{T1}{formata}{n}{it}
+\SetSymbolFont{NewLetters} {regular}{T1}{qhv}{m}{it}
 %\SetSymbolFont{symbols}     {regular}{MY2}{mtt}{m}{n}
 %\SetSymbolFont{largesymbols}{regular}{MY3}{mtt}{m}{n}
-\SetMathAlphabet{\mathrm}{regular}{T1}{formata}{n}{n}
-\SetMathAlphabet{\mathit}{regular}{T1}{formata}{n}{it}
-\SetMathAlphabet{\mathbf}{regular}{T1}{formata}{m}{n}
+\SetMathAlphabet{\mathrm}{regular}{T1}{qhv}{m}{n}
+\SetMathAlphabet{\mathit}{regular}{T1}{qhv}{m}{it}
+\SetMathAlphabet{\mathbf}{regular}{T1}{qhv}{m}{n}
 \SetMathAlphabet{\mathtt}{regular}{OT1}{pcr}{m}{n}
 \newcommand\regularmath{\@nomath\regularmath\mathversion{regular}}
 
 \DeclareMathVersion{medium}
-\SetSymbolFont{operators}{medium}{T1}{formata}{m}{n}
+\SetSymbolFont{operators}{medium}{T1}{qhv}{m}{n}
 %\SetSymbolFont{letters}     {medium}{MY1}{mtt}{b}{it}
-\SetSymbolFont{NewLetters} {medium}{T1}{formata}{m}{it}
+\SetSymbolFont{NewLetters} {medium}{T1}{qhv}{m}{it}
 %\SetSymbolFont{symbols}     {medium}{MY2}{mtt}{b}{n}
 %\SetSymbolFont{largesymbols}{medium}{MY3}{mtt}{b}{n}
-\SetMathAlphabet{\mathrm}{medium}{T1}{formata}{m}{n}
-\SetMathAlphabet{\mathit}{medium}{T1}{formata}{m}{it}
-\SetMathAlphabet{\mathbf}{medium}{T1}{formata}{b}{n}
+\SetMathAlphabet{\mathrm}{medium}{T1}{qhv}{m}{n}
+\SetMathAlphabet{\mathit}{medium}{T1}{qhv}{m}{it}
+\SetMathAlphabet{\mathbf}{medium}{T1}{qhv}{b}{n}
 \SetMathAlphabet{\mathtt}{medium}{OT1}{pcr}{b}{n}
 \newcommand\mediummath{\@nomath\mediummath\mathversion{medium}}
 
 \DeclareMathVersion{black}
-\SetSymbolFont{operators}{black}{T1}{formata}{b}{n}
+\SetSymbolFont{operators}{black}{T1}{qhv}{b}{n}
 %\SetSymbolFont{letters}     {black}{MY1}{mtt}{ub}{it}
-\SetSymbolFont{NewLetters} {black}{T1}{formata}{b}{it}
+\SetSymbolFont{NewLetters} {black}{T1}{qhv}{b}{it}
 %\SetSymbolFont{symbols}     {black}{MY2}{mtt}{ub}{n}
 %\SetSymbolFont{largesymbols}{black}{MY3}{mtt}{ub}{n}
-\SetMathAlphabet{\mathrm}{black}{T1}{formata}{b}{n}
-\SetMathAlphabet{\mathit}{black}{T1}{formata}{b}{it}
-\SetMathAlphabet{\mathbf}{black}{T1}{formata}{b}{n}
+\SetMathAlphabet{\mathrm}{black}{T1}{qhv}{b}{n}
+\SetMathAlphabet{\mathit}{black}{T1}{qhv}{b}{it}
+\SetMathAlphabet{\mathbf}{black}{T1}{qhv}{b}{n}
 \SetMathAlphabet{\mathtt}{black}{OT1}{pcr}{b}{n}
 \newcommand\blackmath{\@nomath\blackmath\mathversion{black}}
 }
@@ -226,7 +226,7 @@
 \gdef\@IEEESAVESTATEfontseries{n}%
 \gdef\@IEEESAVESTATEfontshape{n}%
 %
-\renewcommand{\sfdefault}{formata}%
+\renewcommand{\sfdefault}{qhv}%
 \renewcommand{\rmdefault}{\timesfont}%
 \renewcommand{\ttdefault}{pcr}%
 %
