@@ -26,6 +26,17 @@ latexmk -pdf -f main.tex
 
 Output files go to `build/` via the `.latexmkrc` configuration.
 
+## Fonts
+
+This template uses free TeX Gyre fonts (Termes, Heros) as substitutes for
+the proprietary fonts bundled with the official IEEE Access template (Times,
+Formata, Giovanni Std). The output will differ slightly from the official
+IEEE Access format in headings and captions, but is suitable for drafts and
+preprints.
+
+The TeX Gyre fonts are included in all standard TeX Live installations and
+require no additional setup.
+
 ## Other Templates
 
 - [LatexResponseToReviewersTemplate](https://github.com/iwishiwasaneagle/LatexResponseToReviewersTemplate)
