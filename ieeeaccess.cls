@@ -181,12 +181,12 @@
 \def\authorfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{m}\fontsize{9.9}{12}\selectfont}%formata medium 9.9pt
 \def\subtitlefont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{m}\fontsize{16}{18}\selectfont}%formata medium 16pt
 \def\membershipfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{m}\fontsize{9.9}{12}\selectfont}%formata medium italic 9.9pt
-\def\addressfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{6.6}{8}\selectfont}%times roman 6.6pt
-\def\correspfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{7.7}{9.24}\selectfont}%times roman 7.7pt
-\def\tfootnotefont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{7.7}{9.24}\selectfont}%times roman 7.7pt
-\def\abstractfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{10}{12}\selectfont}%times roman 10pt
-\def\indexfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{10}{12}\selectfont}%times roman 10pt
-\def\bodyfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{10}{12}\selectfont}%times roman 10pt
+\def\addressfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{6.6}{8}\selectfont}%times roman 6.6pt
+\def\correspfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{7.7}{9.24}\selectfont}%times roman 7.7pt
+\def\tfootnotefont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{7.7}{9.24}\selectfont}%times roman 7.7pt
+\def\abstractfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{10}{12}\selectfont}%times roman 10pt
+\def\indexfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{10}{12}\selectfont}%times roman 10pt
+\def\bodyfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{10}{12}\selectfont}%times roman 10pt
 \def\abstractheadfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{b}\fontsize{10}{12}\selectfont}%formata bold 9pt
 \def\indexheadfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{b}\fontsize{10}{12}\selectfont}%formata bold 9pt
 \def\sectionAfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{b}\fontsize{9}{12}\selectfont\blackmath}%formata bold 9pt
@@ -205,9 +205,9 @@
 \def\headerfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{m}\fontsize{7}{7}\selectfont\regularmath}%formata regular 7pt
 \def\nheaderfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{b}\fontsize{9}{9}\selectfont\regularmath}%formata regular 7pt
 \def\iheaderfont{\sffamily\fontencoding{T1}\fontseries{m}\fontshape{sl}\fontsize{7}{7}\selectfont}%formata mediumitalic 9pt
-\def\referencefont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{7.61}{9}\selectfont}%times roman 7.61pt
+\def\referencefont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{7.61}{9}\selectfont}%times roman 7.61pt
 \def\biographyheadfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{m}\fontsize{8}{9.6}\selectfont}%times roman 8pt
-\def\biographyfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{n}\fontsize{8}{9.6}\selectfont}%times roman 8pt
+\def\biographyfont{\rmfamily\fontencoding{T1}\fontfamily{\timesfont}\fontseries{m}\fontsize{8}{9.6}\selectfont}%times roman 8pt
 
 \ifjtehm
 \def\correspfont{\sffamily\fontencoding{T1}\fontfamily{qhv}\fontseries{m}\fontsize{7}{8}\selectfont}%times roman 7.7pt
@@ -223,7 +223,7 @@
 \gdef\@IEEESAVESTATEfontbaselineskip{12}%
 \gdef\@IEEESAVESTATEfontencoding{T1}%
 \gdef\@IEEESAVESTATEfontfamily{\timesfont}%
-\gdef\@IEEESAVESTATEfontseries{n}%
+\gdef\@IEEESAVESTATEfontseries{m}%
 \gdef\@IEEESAVESTATEfontshape{n}%
 %
 \renewcommand{\sfdefault}{qhv}%
