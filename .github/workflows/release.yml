@@ -70,42 +70,18 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          r=$(cat ${{ steps.git-cliff-latest.outputs.changelog }})
-          r="$(printf "$r" | tail -n +3)"
-          r="${r//'%'/'%25'}"
-          r="${r//$'\n'/'%0A'}"
-          r="${r//$'\r'/'%0D'}"
+          {
+            echo 'release_body<<EOF'
+            cat ${{ steps.git-cliff-latest.outputs.changelog }} | tail -n +3
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
   build:
     name: Build document
-    runs-on: ubuntu-latest
     needs: [create-tag, setup-envs]
     if: needs.create-tag.outputs.skip == 'false'
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-        name: Enable docker cache
-
-      - uses: xu-cheng/latex-action@v3
-        name: "Compile document 1/2"
-        with:
-          root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
-
-      - uses: xu-cheng/latex-action@v3
-        name: "Compile document 2/2"
-        with:
-          root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
-          pre_compile: "bibtex main; makeindex main.nlo -s nomencl.ist -o main.nls"
-          post_compile: "latexmk -c"
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: main-pdf-release
-          path: ./main.pdf
+    uses: ./.github/workflows/compile.yml
+    with:
+      artifact-name: main-pdf-release
 
   publish-github:
     name: Publish on GitHub
@@ -132,6 +108,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ needs.create-tag.outputs.tag }}
           file: ${{steps.download.outputs.download-path}}/main.pdf
-          asset_name: $tag.pdf
+          asset_name: ${{ needs.create-tag.outputs.tag }}.pdf
           release_name: "${{ needs.create-tag.outputs.tag }}"
           body: "${{ needs.setup-envs.outputs.release_body }}"

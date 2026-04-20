@@ -7,31 +7,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  
-  Build:
+
+  compile:
+    uses: ./.github/workflows/compile.yml
+
+  upload:
     runs-on: ubuntu-latest
+    needs: compile
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-        name: Enable docker cache
-        
-      - uses: xu-cheng/latex-action@v3 
-        name: "Compile document 1/2"
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
-          root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
-        
-      - uses: xu-cheng/latex-action@v3 
-        name: "Compile document 2/2"
-        with:
-          root_file: main.tex
-          args: -synctex=1 -interaction=nonstopmode -file-line-error -pdf
-          pre_compile: "bibtex main; makeindex main.nlo -s nomencl.ist -o main.nls"
-          post_compile: "latexmk -c"
+          name: build-pdf
 
       - name: Rename main.pdf
         run: |
@@ -41,5 +32,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-pdf
+          name: build-pdf-renamed
           path: ./*.pdf
