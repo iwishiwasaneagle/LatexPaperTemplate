@@ -1,13 +1,8 @@
 \LoadClass{IEEEtran}
 
-\RequirePackage{ifpdf}
 \RequirePackage{xkeyval}
-
-\ifpdf
- \pdfmapfile{+ t1-times.map}
- \pdfmapfile{+ t1-formata.map}
- \pdfmapfile{+ t1-giovannistd.map}
-\fi
+\RequirePackage{tgtermes}
+\RequirePackage{tgheros}
 
 \newif\iflineno\linenofalse
 \newif\ifjtehm\jtehmfalse
@@ -53,7 +48,7 @@
 
 %% Font definitions
 
-\def\timesfont{times}%
+\def\timesfont{qtm}%
 
 % FormataOTF et al
 \DeclareFontFamily{T1}{formata}{}
