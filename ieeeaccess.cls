@@ -50,19 +50,6 @@
 
 \def\timesfont{qtm}%
 
-% FormataOTF et al
-\DeclareFontFamily{T1}{formata}{}
-\DeclareFontShape{T1}{formata}{n}{n}{<->   t1-formata-regular}{}
-\DeclareFontShape{T1}{formata}{n}{it}{<->  t1-formata-italic}{}
-\DeclareFontShape{T1}{formata}{m}{n}{<->   t1-formata-medium}{}
-\DeclareFontShape{T1}{formata}{m}{it}{<->  t1-formata-mediumitalic}{}
-\DeclareFontShape{T1}{formata}{l}{n}{<->   t1-formata-light}{}
-\DeclareFontShape{T1}{formata}{l}{it}{<->  t1-formata-lightitalic}{}
-\DeclareFontShape{T1}{formata}{b}{n}{<->   t1-formata-bold}{}
-\DeclareFontShape{T1}{formata}{b}{it}{<->  t1-formata-bolditalic}{}
-\DeclareFontShape{T1}{formata}{cm}{n}{<->  t1-formata-condmedium}{}
-\DeclareFontShape{T1}{formata}{cm}{it}{<-> t1-formata-condmediumital}{}
-\DeclareFontShape{T1}{formata}{X}{n}{<->   t1-formata-regsymb}{}
 
 \def\biosc#1{{\fontsize{5.5}{8}\selectfont\MakeUppercase{#1}}}
 
@@ -180,9 +167,6 @@
 \newcommand\blackmath{\@nomath\blackmath\mathversion{black}}
 }
 
-% GiovanniStd
-\DeclareFontFamily{T1}{giovannistd}{}
-\DeclareFontShape{T1}{giovannistd}{n}{it}{<->   t1-giovannistd-bookitalic}{}
 
 \def\putfont#1#2#3#4#5#6{\usefont{#1}{#2}{#3}{#4}\fontsize{#5}{#6}\selectfont}
 
